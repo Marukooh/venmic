@@ -14,7 +14,7 @@ runs:
   using: "composite"
   steps:
       - name: ⌛ Wait for Image
-        uses: kachick/wait-other-jobs@v4
+        uses: kachick/wait-other-jobs@529e4845f55b9664a6116804084d5765ce543d49
         with:
           wait-list: |
             [
