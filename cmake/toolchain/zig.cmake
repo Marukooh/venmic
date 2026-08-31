@@ -14,6 +14,7 @@ set(CMAKE_CXX_COMPILER_TARGET ${ZIG_TARGET})
 # | See https://github.com/ziglang/zig/issues/22213                                                       |
 # +-------------------------------------------------------------------------------------------------------+
 
+set(CMAKE_SKIP_RPATH TRUE)
 set(CMAKE_C_LINKER_DEPFILE_SUPPORTED OFF)
 set(CMAKE_CXX_LINKER_DEPFILE_SUPPORTED OFF)
 
