@@ -1,34 +1,43 @@
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
-name: 🧪 Test
+name: 🧪 Build & Test
 
 jobs:
-  test-addon:
+  build-addon:
     runs-on: ubuntu-latest
-    container: archlinux:base-devel
 
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v7
 
-      - name: 👷 Build Dependencies
-        run: "pacman --noconfirm -Syu base-devel cmake gcc git make pipewire pipewire-pulse"
-
-      - name: 🍃 Install Node
-        uses: actions/setup-node@v4
+      - name: 🧪 Build & Test Addon
+        uses: ./.github/actions/build
         with:
-          node-version: 22
+          command: pnpm install --ignore-scripts && pnpm run configure && pnpm run build && pnpm run test
 
-      - name: 🍃 Install pnpm
-        uses: pnpm/action-setup@v2
+      - name: 📤 Upload Artifact
+        uses: actions/upload-artifact@v7
         with:
-          version: 8
-          run_install: false
+          name: addon
+          path: build
 
-      - name: 🔨 Build
-        run: "pnpm install"
+  build-server:
+    runs-on: ubuntu-latest
 
-      - name: 🧪 Test
-        run: "pnpm run test"
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v7
+
+      - name: 🏗️ Build Server
+        uses: ./.github/actions/build
+        with:
+          command: cmake -B build && cmake --build build
+
+      - name: 📤 Upload Artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: server
+          path: build

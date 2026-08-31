@@ -120,10 +120,7 @@ namespace
                 props = std::move(*array);
             }
 
-            auto list = vencord::patchbay::get().list(props);
-            auto rtn  = Napi::Array::New(env, list.size());
-
-            const auto convert = [&](const auto &item)
+            const auto convert = [&env](auto &&item)
             {
                 auto rtn = Napi::Object::New(env);
 
@@ -135,15 +132,16 @@ namespace
                 return rtn;
             };
 
-            const auto add = [&](const auto &item)
-            {
-                rtn.Set(std::get<0>(item), std::get<1>(item));
-            };
+            auto list = vencord::patchbay::get().list(props) //
+                        | std::views::transform(convert)     //
+                        | std::ranges::to<std::vector>();
 
-            std::ranges::for_each(list                                 //
-                                      | std::views::transform(convert) //
-                                      | std::views::enumerate,
-                                  add);
+            auto rtn = Napi::Array::New(env, list.size());
+
+            for (auto i = 0uz; list.size() > i; ++i)
+            {
+                rtn.Set(i, list[i]);
+            }
 
             return rtn;
         }

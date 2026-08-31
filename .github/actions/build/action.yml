@@ -1,33 +1,29 @@
-name: "🎤 Compile Venmic"
-description: "Installs Dependencies & Compiles Venmic"
+name: "🏗️ Build Addon"
+description: "Runs the given command using the build container"
 
 inputs:
-  kind:
-    default: "addon"
-    required: false
-    description: Either 'server' or 'addon'
+  arch:
+    default: amd64
+    description: Either 'amd64' or 'arm64'
 
-  libc:
+  command:
     required: true
-    description: Either 'glibc' or 'musl'
+    description: The command to run 
 
 runs:
   using: "composite"
   steps:
-    - name: 📋 Install Base Dependencies
-      shell: sh
-      run: ./docker/${{ inputs.libc }}/dependencies.sh
+      - name: ⌛ Wait for Image
+        uses: kachick/wait-other-jobs@v4
+        with:
+          wait-list: |
+            [
+              {
+                "workflowFile": "image.yml",
+                "optional": true
+              }
+            ]
 
-    - name: 🔨 Compile (Server)
-      if: inputs.kind == 'server'
-      shell: bash
-      run: |
-        cmake -B build
-        cmake --build build
-
-    - name: 🔨 Compile (Addon)
-      if: inputs.kind == 'addon'
-      shell: bash
-      run: |
-        npm install --global pnpm
-        VENMIC_NOT_DOCKER=1 ./docker/build.sh
+      - name: 🏗️ Build
+        shell: bash
+        run: docker run -v ${{ github.workspace }}:/work --platform linux/${{ inputs.arch }} ghcr.io/vencord/venmic-builder-${{ inputs.arch }}:latest "${{ inputs.command }}"

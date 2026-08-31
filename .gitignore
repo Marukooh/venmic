@@ -1,8 +1,6 @@
-docker/*/build.sh
-
-node_modules
-prebuilds
-./build
+/node_modules
+/prebuilds
+/build
 
 .vscode
 .cache

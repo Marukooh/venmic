@@ -70,7 +70,7 @@ namespace vencord
 
       private:
         std::optional<share_node> virt_mic;
-        std::unordered_map<std::uint32_t, pw::impl::module> virt_links;
+        std::unordered_map<std::uint32_t, pw::impl::mod> virt_links;
 
       private:
         std::unordered_map<std::uint32_t, pw::node_info> nodes;
