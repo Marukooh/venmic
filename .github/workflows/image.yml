@@ -52,12 +52,14 @@ jobs:
 
       - name: 🔐 Login
         uses: docker/login-action@v4
+        if: ${{ steps.cache-image.outputs.cache-hit != 'true' }}
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: ♻️ Publish Images
+        if: ${{ steps.cache-image.outputs.cache-hit != 'true' }}
         run: |
           # Prepare...
           docker load < venmic-builder-${{ matrix.arch }}.tar
