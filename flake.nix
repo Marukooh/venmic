@@ -36,6 +36,7 @@
                 nativeBuildInputs = with pkgs; [
                   llvmPkgs.lldb
                   llvmPkgs.clang
+                  llvmPkgs.libllvm
 
                   zig
                   ninja

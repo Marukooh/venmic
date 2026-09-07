@@ -13,9 +13,9 @@ runs:
         uses: actions/download-artifact@v8
         with:
           name: addon-${{ inputs.arch }}
-          path: build/Release
+          path: build/MinSizeRel
 
       - name: 🛠️ Prepare Prebuilds
         shell: bash
         run: |
-          pnpm pkg-prebuilds-copy --baseDir build/Release --source venmic-addon.node --name=venmic-addon --strip --napi_version=7 --arch=${{ inputs.arch == 'amd64' && 'x64' || 'arm64' }}
+          pnpm pkg-prebuilds-copy --baseDir build/MinSizeRel --source venmic-addon.node --name=venmic-addon --strip --napi_version=7 --arch=${{ inputs.arch == 'amd64' && 'x64' || 'arm64' }}
