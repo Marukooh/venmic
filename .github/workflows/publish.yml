@@ -41,7 +41,7 @@ jobs:
         if: ${{ github.event.inputs.fix != 'true' }}
         with:
           arch: ${{ matrix.arch }}
-          command: pnpm install --ignore-scripts && pnpm run configure:zig:${{ matrix.arch == 'amd64' && 'x86' || 'aarch' }} && pnpm run build
+          command: pnpm install --ignore-scripts && pnpm run configure:zig:${{ matrix.arch == 'amd64' && 'x86' || 'aarch' }} && pnpm run build:zig
 
       - name: 📤 Upload Artifact
         uses: actions/upload-artifact@v7

@@ -11,18 +11,19 @@
   "private": false,
   "license": "MPL-2.0",
   "author": "Curve (https://github.com/Curve)",
-  "version": "7.2.2",
+  "version": "7.2.3",
   "main": "./lib/index.js",
   "types": "./lib/module.d.ts",
   "scripts": {
     "clean": "cmake-js clean",
     "test": "node tests/node/*.js",
     "configure": "cmake-js configure --CDvenmic_addon=ON --CDCMAKE_EXPORT_COMPILE_COMMANDS=ON",
-    "configure:zig:x86": "cmake-js configure --CDCMAKE_TOOLCHAIN_FILE=cmake/toolchain/zig.cmake --CDZIG_TARGET=x86_64-linux-gnu.2.31 --CDvenmic_use_fill=ON --CDvenmic_addon=ON --CDCMAKE_EXPORT_COMPILE_COMMANDS=ON",
-    "configure:zig:aarch": "cmake-js configure --CDCMAKE_TOOLCHAIN_FILE=cmake/toolchain/zig.cmake --CDZIG_TARGET=aarch64-linux-gnu.2.31 --CDvenmic_use_fill=ON --CDvenmic_addon=ON --CDCMAKE_EXPORT_COMPILE_COMMANDS=ON",
-    "build": "cmake-js compile --config MinSizeRel -p",
+    "configure:zig:x86": "cmake-js configure --config MinSizeRel --CDCMAKE_TOOLCHAIN_FILE=cmake/toolchain/zig.cmake --CDZIG_TARGET=x86_64-linux-gnu.2.31 --CDvenmic_use_fill=ON --CDvenmic_addon=ON --CDCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+    "configure:zig:aarch": "cmake-js configure --config MinSizeRel --CDCMAKE_TOOLCHAIN_FILE=cmake/toolchain/zig.cmake --CDZIG_TARGET=aarch64-linux-gnu.2.31 --CDvenmic_use_fill=ON --CDvenmic_addon=ON --CDCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+    "build": "cmake-js compile -p",
+    "build:zig": "cmake-js compile --config MinSizeRel -p",
     "install": "pkg-prebuilds-verify ./lib/options.js || (pnpm run configure && pnpm run build)",
-    "install:zig": "pkg-prebuilds-verify ./lib/options.js || (pnpm run configure:zig && pnpm run build)"
+    "install:zig": "pkg-prebuilds-verify ./lib/options.js || (pnpm run configure:zig && pnpm run build:zig)"
   },
   "os": [
     "linux"
