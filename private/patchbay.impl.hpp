@@ -59,6 +59,9 @@ namespace vencord
 
       public:
         ~loopback();
+
+      public:
+        [[nodiscard]] bool alive() const;
     };
 
     enum class clean : std::uint8_t
@@ -110,10 +113,12 @@ namespace vencord
       private:
         coco::task<void> create_mic(bool);
         coco::task<void> mute(pw::node_info, bool);
+        coco::task<std::map<std::uint32_t, pw::port_info>> wait_for_ports(const pw::node_info &);
         coco::task<void> redirect(std::optional<pw::node_info> = {});
 
       private:
         bool should_link(const pw::node_info &);
+        [[nodiscard]] bool has_loopback(std::uint32_t) const;
         void link(const pw::node_info &, const pw::node_info &);
 
       private:
